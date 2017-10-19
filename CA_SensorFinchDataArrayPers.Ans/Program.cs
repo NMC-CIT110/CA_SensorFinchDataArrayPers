@@ -44,6 +44,7 @@ namespace CA_SensorFinchDataArrayPers
                 Console.WriteLine("\tC) Acquire Data");
                 Console.WriteLine("\tD) Display Data");
                 Console.WriteLine("\tE) Save Data");
+                Console.WriteLine("\tF) Retrieve Data");
                 Console.WriteLine("\tQ) Quit");
                 Console.Write("Enter Choice:");
                 menuChoice = Console.ReadLine();
@@ -75,6 +76,11 @@ namespace CA_SensorFinchDataArrayPers
                         DisplaySaveDataSet();
                         break;
 
+                    case "F":
+                    case "f":
+                        DisplayRetrieveDataSet();
+                        break;
+
                     case "Q":
                     case "q":
                         exiting = true;
@@ -86,6 +92,53 @@ namespace CA_SensorFinchDataArrayPers
             }
         }
 
+        /// <summary>
+        /// retrieve the data to a text file
+        /// </summary>
+        static void DisplayRetrieveDataSet()
+        {
+            DisplayHeader("Retrieve Data");
+
+            //
+            // set the data path
+            //
+            dataPath = "Data\\Data.txt";
+
+            Console.WriteLine("Ready to retrieve data. Press Enter to continue.");
+            Console.ReadLine();
+
+            //
+            // read the data file into a string array
+            // note that the ReadAllLines methods sets the length of the array
+            //
+            temperaturesAsString = File.ReadAllLines(dataPath);
+
+            //
+            // get the number of data points using the Length property of the array
+            //
+            numberOfDataPoints = temperaturesAsString.Length;
+
+            //
+            // create (instantiate) the temperatures array
+            //
+            temperatures = new double[numberOfDataPoints];
+
+            //
+            // convert the temperatures string array to an array of doubles
+            //
+            for (int index = 0; index < numberOfDataPoints; index++)
+            {
+                temperatures[index] = double.Parse(temperaturesAsString[index]);
+            }
+
+            Console.WriteLine("Data retrieved correctly.");
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// save the data to a text file
+        /// </summary>
         static void DisplaySaveDataSet()
         {
             DisplayHeader("Save Data");
