@@ -10,7 +10,7 @@ namespace CA_SensorFinchDataArrayPers
         //
         static Finch freddy = new Finch();
         static int numberOfDataPoints;
-        static int secondsBetweenDataPoints;
+        static double secondsBetweenDataPoints;
         static double[] temperatures;
 
         /// <summary>
@@ -39,7 +39,8 @@ namespace CA_SensorFinchDataArrayPers
                 Console.WriteLine("\tA) Connect to Finch Robot");
                 Console.WriteLine("\tB) Setup Application");
                 Console.WriteLine("\tC) Acquire Data");
-                Console.WriteLine("\tE) Exit");
+                Console.WriteLine("\tD) Display Data");
+                Console.WriteLine("\tQ) Quit");
                 Console.Write("Enter Choice:");
                 menuChoice = Console.ReadLine();
 
@@ -60,8 +61,13 @@ namespace CA_SensorFinchDataArrayPers
                         DisplayAcquireDataSet();
                         break;
 
-                    case "E":
-                    case "e":
+                    case "D":
+                    case "d":
+                        DisplayDataSet();
+                        break;
+
+                    case "Q":
+                    case "q":
                         exiting = true;
                         break;
 
@@ -119,7 +125,7 @@ namespace CA_SensorFinchDataArrayPers
             {
                 temperatures[index] = freddy.getTemperature();
                 Console.WriteLine($"Data Point {index + 1}: {temperatures[index]}");
-                freddy.wait(secondsBetweenDataPoints * 1000);
+                freddy.wait((int)(secondsBetweenDataPoints * 1000));
             }
 
             DisplayDataSetList();
@@ -132,13 +138,13 @@ namespace CA_SensorFinchDataArrayPers
         /// </summary>
         static void DisplaySetupApplication()
         {
-            DisplayHeader("Setup Applicaiton");
+            DisplayHeader("Setup Application");
 
-            Console.WriteLine("Enter the number of data points:");
+            Console.Write("Enter the number of data points:");
             numberOfDataPoints = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter the seconds between data points:");
-            secondsBetweenDataPoints = int.Parse(Console.ReadLine());
+            Console.Write("Enter the seconds between data points:");
+            secondsBetweenDataPoints = double.Parse(Console.ReadLine());
 
             Console.WriteLine();
             Console.WriteLine($"Number of Data Points: {numberOfDataPoints}");
