@@ -5,73 +5,78 @@ namespace CA_SensorFinchDataArrayPers
 {
     class Program
     {
-        //
-        // global variables
-        //
-        static Finch freddy = new Finch();
-        static int numberOfDataPoints;
-        static double secondsBetweenDataPoints;
-        static double[] temperatures;
-
         /// <summary>
         /// Main method - application starting point
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            Finch freddy = new Finch();
+
             DisplayOpeningScreen();
-            DisplayMainMenu();
-            DisplayClosingScreen();
+            DisplayMainMenu(freddy);
+            DisplayClosingScreen(freddy);
         }
 
         /// <summary>
         /// display menu
         /// </summary>
-        static void DisplayMainMenu()
+        static void DisplayMainMenu(Finch freddy)
         {
             string menuChoice;
             bool exiting = false;
+            int numberOfDataPoints = 0;
+            double secondsBetweenDataPoints = 0;
+            double[] temperatures = null;
 
             while (!exiting)
             {
                 DisplayHeader("Main Menu");
 
+                //
+                // display main menu
+                //
                 Console.WriteLine("\tA) Connect to Finch Robot");
                 Console.WriteLine("\tB) Setup Application");
                 Console.WriteLine("\tC) Acquire Data");
                 Console.WriteLine("\tD) Display Data");
                 Console.WriteLine("\tQ) Quit");
-                Console.Write("Enter Choice:");
-                menuChoice = Console.ReadLine();
+                Console.WriteLine();
+                Console.Write("\tEnter Choice:");
+                menuChoice = Console.ReadLine().ToUpper();
 
+                //
+                // process main menu
+                //
                 switch (menuChoice)
                 {
                     case "A":
-                    case "a":
-                        DisplayConnectToFinch();
+                        DisplayConnectToFinch(freddy);
                         break;
 
                     case "B":
-                    case "b":
-                        DisplaySetupApplication();
+                        numberOfDataPoints = DisplayGetNumberOfDataPoints();
+                        secondsBetweenDataPoints = DisplayGetSecondsBetweenDataPoints();
+
                         break;
 
                     case "C":
-                    case "c":
-                        DisplayAcquireDataSet();
+                        temperatures = DisplayAcquireDataSet(numberOfDataPoints, secondsBetweenDataPoints, freddy);
                         break;
 
                     case "D":
-                    case "d":
-                        DisplayDataSet();
+                        DisplayDataSet(temperatures);
                         break;
 
                     case "Q":
-                    case "q":
                         exiting = true;
                         break;
 
                     default:
+                        Console.WriteLine();
+                        Console.WriteLine("Please enter the letter of your menu choice.");
+
+                        DisplayContinuePrompt();
                         break;
                 }
             }
@@ -80,14 +85,11 @@ namespace CA_SensorFinchDataArrayPers
         /// <summary>
         /// display a list of the data points
         /// </summary>
-        static void DisplayDataSetList()
+        static void DisplayDataSetList(double[] temperatures)
         {
-            //
-            // display data
-            //
             Console.WriteLine();
-            Console.WriteLine("Data Points");
-            for (int index = 0; index < numberOfDataPoints; index++)
+            Console.WriteLine("Data Points Recorded");
+            for (int index = 0; index < temperatures.Length; index++)
             {
                 Console.WriteLine($"\t\tData Point {index + 1}: {temperatures[index]}");
             }
@@ -96,11 +98,11 @@ namespace CA_SensorFinchDataArrayPers
         /// <summary>
         /// display the data set
         /// </summary>
-        static void DisplayDataSet()
+        static void DisplayDataSet(double[] temperatures)
         {
             DisplayHeader("Current Data Set");
 
-            DisplayDataSetList();
+            DisplayDataSetList(temperatures);
 
             DisplayContinuePrompt();
         }
@@ -108,8 +110,10 @@ namespace CA_SensorFinchDataArrayPers
         /// <summary>
         /// acquire data 
         /// </summary>
-        static void DisplayAcquireDataSet()
+        static double[] DisplayAcquireDataSet(int numberOfDataPoints, double secondsBetweenDataPoints, Finch freddy)
         {
+            double[] temperatures = new double[numberOfDataPoints];
+
             DisplayHeader("Acquire Data Set");
 
             //
@@ -128,40 +132,57 @@ namespace CA_SensorFinchDataArrayPers
                 freddy.wait((int)(secondsBetweenDataPoints * 1000));
             }
 
-            DisplayDataSetList();
+            DisplayDataSetList(temperatures);
 
             DisplayContinuePrompt();
+
+            return temperatures;
         }
 
         /// <summary>
-        /// get the application parameters
+        /// get number of data points
         /// </summary>
-        static void DisplaySetupApplication()
+        static int DisplayGetNumberOfDataPoints()
         {
-            DisplayHeader("Setup Application");
+            int numberOfDataPoints;
+
+            DisplayHeader("Number of Data Points");
 
             Console.Write("Enter the number of data points:");
             numberOfDataPoints = int.Parse(Console.ReadLine());
+
+            Console.WriteLine();
+            Console.WriteLine($"Number of Data Points: {numberOfDataPoints}");
+
+            DisplayContinuePrompt();
+
+            return numberOfDataPoints;
+        }
+
+        /// <summary>
+        /// get seconds between data points
+        /// </summary>
+        static double DisplayGetSecondsBetweenDataPoints()
+        {
+            double secondsBetweenDataPoints;
+
+            DisplayHeader("Seconds Between Data Points");
 
             Console.Write("Enter the seconds between data points:");
             secondsBetweenDataPoints = double.Parse(Console.ReadLine());
 
             Console.WriteLine();
-            Console.WriteLine($"Number of Data Points: {numberOfDataPoints}");
             Console.WriteLine("Seconds Between Data Points {0}", secondsBetweenDataPoints);
 
-            //
-            // create (instantiate) the array
-            //
-            temperatures = new double[numberOfDataPoints];
-
             DisplayContinuePrompt();
+
+            return secondsBetweenDataPoints;
         }
 
         /// <summary>
         /// connect to Finch Robot
         /// </summary>
-        static void DisplayConnectToFinch()
+        static void DisplayConnectToFinch(Finch freddy)
         {
             DisplayHeader("Connect to Finch");
 
@@ -194,7 +215,7 @@ namespace CA_SensorFinchDataArrayPers
         /// <summary>
         /// display closing screen
         /// </summary>
-        static void DisplayClosingScreen()
+        static void DisplayClosingScreen(Finch freddy)
         {
             Console.Clear();
 
@@ -207,6 +228,8 @@ namespace CA_SensorFinchDataArrayPers
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
         }
+
+        #region  HELPER METHODS
 
         /// <summary>
         /// display continue prompt
@@ -228,5 +251,7 @@ namespace CA_SensorFinchDataArrayPers
             Console.WriteLine("\t\t" + headerTitle);
             Console.WriteLine();
         }
+
+        #endregion
     }
 }
