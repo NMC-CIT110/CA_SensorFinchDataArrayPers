@@ -19,7 +19,7 @@ namespace CA_SensorFinchDataArrayPers
         }
 
         /// <summary>
-        /// display menu
+        /// display main menu
         /// </summary>
         static void DisplayMainMenu(Finch freddy)
         {

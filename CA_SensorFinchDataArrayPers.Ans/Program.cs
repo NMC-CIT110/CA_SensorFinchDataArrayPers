@@ -6,7 +6,6 @@ namespace CA_SensorFinchDataArrayPers
 {
     class Program
     {
-
         /// <summary>
         /// Main method - application starting point
         /// </summary>
@@ -19,70 +18,6 @@ namespace CA_SensorFinchDataArrayPers
             DisplayMainMenu(freddy);
             DisplayClosingScreen(freddy);
         }
-
-        ///// <summary>
-        ///// display menu
-        ///// </summary>
-        //static void DisplayMainMenu(Finch freddy)
-        //{
-        //    string menuChoice;
-        //    bool exiting = false;
-        //    int numberOfDataPoints = 0;
-        //    double secondsBetweenDataPoints = 0;
-        //    double[] temperatures = null;
-
-        //    while (!exiting)
-        //    {
-        //        DisplayHeader("Main Menu");
-
-        //        //
-        //        // display main menu
-        //        //
-        //        Console.WriteLine("\tA) Connect to Finch Robot");
-        //        Console.WriteLine("\tB) Setup Application");
-        //        Console.WriteLine("\tC) Acquire Data");
-        //        Console.WriteLine("\tD) Display Data");
-        //        Console.WriteLine("\tQ) Quit");
-        //        Console.WriteLine();
-        //        Console.Write("\tEnter Choice:");
-        //        menuChoice = Console.ReadLine().ToUpper();
-
-        //        //
-        //        // process main menu
-        //        //
-        //        switch (menuChoice)
-        //        {
-        //            case "A":
-        //                DisplayConnectToFinch(freddy);
-        //                break;
-
-        //            case "B":
-        //                numberOfDataPoints = DisplayGetNumberOfDataPoints();
-        //                secondsBetweenDataPoints = DisplayGetSecondsBetweenDataPoints();
-
-        //                break;
-
-        //            case "C":
-        //                temperatures = DisplayAcquireDataSet(numberOfDataPoints, secondsBetweenDataPoints, freddy);
-        //                break;
-
-        //            case "D":
-        //                DisplayDataSet(numberOfDataPoints, temperatures);
-        //                break;
-
-        //            case "Q":
-        //                exiting = true;
-        //                break;
-
-        //            default:
-        //                Console.WriteLine();
-        //                Console.WriteLine("Please enter the letter of your menu choice.");
-
-        //                DisplayContinuePrompt();
-        //                break;
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// display menu
